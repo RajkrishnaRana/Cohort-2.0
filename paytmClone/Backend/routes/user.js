@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 
 const { User, Account } = require("../db");
 const { JWT_SECRET } = require("../config");
+const { authMiddleware } = require("../middleware");
 
 const router = express.Router();
 
@@ -18,8 +19,6 @@ router.post("/signUp", async (req, res) => {
     });
 
     const { success, error } = signUpBody.safeParse(body);
-
-    error && console.log(error);
 
     if (!success) {
         return res.status(411).json({ message: "Give All the details" });
@@ -106,7 +105,7 @@ router.put("/", async (req, res) => {
     });
 });
 
-router.get("/bulk", async (req, res) => {
+router.get("/bulk", authMiddleware, async (req, res) => {
     const filter = req.query.filter || "";
 
     const users = await User.find({
@@ -132,6 +131,15 @@ router.get("/bulk", async (req, res) => {
             _id: user._id,
         })),
     });
+});
+
+router.get("/me", authMiddleware, async (req, res) => {
+    try {
+        res.status(200).json({ message: "Token valid" });
+    } catch (e) {
+        console.log(e);
+        res.status(500).json({ message: "Token invalid" });
+    }
 });
 
 module.exports = router;
