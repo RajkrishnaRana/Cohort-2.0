@@ -10,22 +10,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("./utils");
-function insertData() {
+function getTodosForUser(userId) {
     return __awaiter(this, void 0, void 0, function* () {
-        try {
-            const client = yield (0, utils_1.getClient)();
-            // const insertUserText =
-            //     "INSERT INTO users (email, password) VALUES ($1, $2) RETURNING id";
-            // const userValues = ["raj@gmail.com", "hashed_password_here"];
-            // let response = await client.query(insertUserText, userValues);
-            const insertIntoTodos = "INSERT INTO todos (title, description, user_id, done) VALUES ($1, $2, $3, $4) RETURNING id";
-            const todoValues = ["buy groceries", "Milk, eggs, & bread", 3, false];
-            yield client.query(insertIntoTodos, todoValues);
-            console.log("Entries created successfully");
-        }
-        catch (error) {
-            console.error("Error inserting data:", error);
-        }
+        const client = yield (0, utils_1.getClient)();
+        const query = `
+        SELECT todos.*, users.email AS user_email
+        FROM todos
+        FULL JOIN users ON todos.user_id = users.id 
+        WHERE todos.user_id = $1
+    `;
+        // Also there are Left Join, Inner Join, and Right Join(Default join is Inner Join)
+        const result = yield client.query(query, [userId]);
+        console.log("Todos : ", result.rows);
     });
 }
-insertData();
+getTodosForUser(3);

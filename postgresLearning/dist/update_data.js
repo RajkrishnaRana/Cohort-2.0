@@ -9,23 +9,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.updateTodo = updateTodo;
 const utils_1 = require("./utils");
-function insertData() {
+function updateTodo(todoId) {
     return __awaiter(this, void 0, void 0, function* () {
-        try {
-            const client = yield (0, utils_1.getClient)();
-            // const insertUserText =
-            //     "INSERT INTO users (email, password) VALUES ($1, $2) RETURNING id";
-            // const userValues = ["raj@gmail.com", "hashed_password_here"];
-            // let response = await client.query(insertUserText, userValues);
-            const insertIntoTodos = "INSERT INTO todos (title, description, user_id, done) VALUES ($1, $2, $3, $4) RETURNING id";
-            const todoValues = ["buy groceries", "Milk, eggs, & bread", 3, false];
-            yield client.query(insertIntoTodos, todoValues);
-            console.log("Entries created successfully");
-        }
-        catch (error) {
-            console.error("Error inserting data:", error);
-        }
+        const client = yield (0, utils_1.getClient)();
+        const query = "UPDATE todos SET done = $1 WHERE id = $2";
+        yield client.query(query, [true, todoId]);
+        console.log(`Todo with id: ${todoId} updated to done`);
     });
 }
-insertData();
+updateTodo(3);

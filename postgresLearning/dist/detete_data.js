@@ -10,22 +10,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("./utils");
-function insertData() {
+function deleteTodo(todoId) {
     return __awaiter(this, void 0, void 0, function* () {
-        try {
-            const client = yield (0, utils_1.getClient)();
-            // const insertUserText =
-            //     "INSERT INTO users (email, password) VALUES ($1, $2) RETURNING id";
-            // const userValues = ["raj@gmail.com", "hashed_password_here"];
-            // let response = await client.query(insertUserText, userValues);
-            const insertIntoTodos = "INSERT INTO todos (title, description, user_id, done) VALUES ($1, $2, $3, $4) RETURNING id";
-            const todoValues = ["buy groceries", "Milk, eggs, & bread", 3, false];
-            yield client.query(insertIntoTodos, todoValues);
-            console.log("Entries created successfully");
-        }
-        catch (error) {
-            console.error("Error inserting data:", error);
-        }
+        const client = yield (0, utils_1.getClient)();
+        const query = "DELETE FROM todos WHERE id = $1";
+        yield client.query(query, [todoId]);
+        console.log(`Todo with id: ${todoId} deleted`);
     });
 }
-insertData();
+deleteTodo(3);
