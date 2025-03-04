@@ -3,18 +3,19 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 async function main() {
-    await prisma.user.create({
-        data: {
-            name: "Alice",
-            email: "alice@prisma.io",
-            posts: {
-                create: { title: "Hello World" },
-            },
-            profile: {
-                create: { bio: "I like turtles" },
-            },
+    const users = await prisma.user.findMany();
+    console.log(users);
+
+    const user = await prisma.user.findUnique({
+        where: {
+            id: 1,
+        },
+        include: {
+            posts: true,
         },
     });
+
+    console.log(user);
 }
 
 main()

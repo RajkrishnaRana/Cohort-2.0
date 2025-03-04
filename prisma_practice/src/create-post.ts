@@ -3,16 +3,12 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 async function main() {
-    await prisma.user.create({
+    await prisma.post.create({
         data: {
-            name: "Alice",
-            email: "alice@prisma.io",
-            posts: {
-                create: { title: "Hello World" },
-            },
-            profile: {
-                create: { bio: "I like turtles" },
-            },
+            title: "MY FIRST POST",
+            content: "Learning Prisma with postgres",
+            published: true,
+            authorId: 1,
         },
     });
 }
