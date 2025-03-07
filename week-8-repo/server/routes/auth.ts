@@ -4,6 +4,8 @@ import { authenticateJwt, SECRET } from "../middleware/";
 import { User } from "../db";
 import { signupInput } from "@rkrana001/common";
 
+// for the git purpose
+
 const router = express.Router();
 
 router.post("/signup", async (req, res) => {
