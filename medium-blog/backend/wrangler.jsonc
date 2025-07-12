@@ -1,38 +1,38 @@
 {
-  "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "backend",
-  "main": "src/index.ts",
-  "compatibility_date": "2025-03-24"
-  // "compatibility_flags": [
-  //   "nodejs_compat"
-  // ],
-  // "vars": {
-  //   "MY_VAR": "my-variable"
-  // },
-  // "kv_namespaces": [
-  //   {
-  //     "binding": "MY_KV_NAMESPACE",
-  //     "id": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-  //   }
-  // ],
-  // "r2_buckets": [
-  //   {
-  //     "binding": "MY_BUCKET",
-  //     "bucket_name": "my-bucket"
-  //   }
-  // ],
-  // "d1_databases": [
-  //   {
-  //     "binding": "MY_DB",
-  //     "database_name": "my-database",
-  //     "database_id": ""
-  //   }
-  // ],
-  // "ai": {
-  //   "binding": "AI"
-  // },
-  // "observability": {
-  //   "enabled": true,
-  //   "head_sampling_rate": 1
-  // }
+    "$schema": "node_modules/wrangler/config-schema.json",
+    "name": "backend",
+    "main": "src/index.ts",
+    "compatibility_date": "2025-03-24",
+    // "compatibility_flags": [
+    //   "nodejs_compat"
+    // ],
+    "vars": {
+        "DATABASE_URL": "prisma://accelerate.prisma-data.net/?api_key=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqd3RfaWQiOjEsInNlY3VyZV9rZXkiOiJza19HS2oxenpBZ1JjVGlYM0VreFM0YzMiLCJhcGlfa2V5IjoiMDFKWllKQVJTOVRNWTYxQ1lKVEUxQ0g3WFoiLCJ0ZW5hbnRfaWQiOiI0MTM0ZjQ3YTA1YTQyZGFhYWQwNGIxMDFlZmNkYmEyNjQ1NDdjODQ5OWZiNGVjYmU5Y2U1YTJjYWIwZTNlODA4IiwiaW50ZXJuYWxfc2VjcmV0IjoiNjc1ZWEyNTctOTJjMi00NjhiLWI0NzItMTEyZjg3Mzk5NTAxIn0.s-p2RGpvHBnROyujmrHGhGQBz0Dcco3FXuuoY_tRbMo"
+    }
+    // "kv_namespaces": [
+    //   {
+    //     "binding": "MY_KV_NAMESPACE",
+    //     "id": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    //   }
+    // ],
+    // "r2_buckets": [
+    //   {
+    //     "binding": "MY_BUCKET",
+    //     "bucket_name": "my-bucket"
+    //   }
+    // ],
+    // "d1_databases": [
+    //   {
+    //     "binding": "MY_DB",
+    //     "database_name": "my-database",
+    //     "database_id": ""
+    //   }
+    // ],
+    // "ai": {
+    //   "binding": "AI"
+    // },
+    // "observability": {
+    //   "enabled": true,
+    //   "head_sampling_rate": 1
+    // }
 }
