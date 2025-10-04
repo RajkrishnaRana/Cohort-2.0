@@ -9,25 +9,31 @@ export const blogRouter = new Hono<{
         JWTSECRET: string;
     };
     Variables: {
-        userId: number;
+        userId: string;
     };
 }>();
 
-blogRouter.use("*/", async (c, next) => {
+blogRouter.use("/*", async (c, next) => {
     const authHeader = c.req.header("Authorization") || "";
-    const user = await verify(authHeader, c.env.JWTSECRET);
 
-    if (user) {
-        c.set("userId", user.id as number);
-        next();
-    } else {
-        c.status(401);
-        return c.text("Unauthorized");
+    try {
+        const user = await verify(authHeader, c.env.JWTSECRET);
+        if (user) {
+            c.set("userId", user.id as string);
+            await next();
+        } else {
+            c.status(401);
+            return c.text("Unauthorized");
+        }
+    } catch (error) {
+        c.status(403);
+        return c.text("Server Error");
     }
 });
 
 blogRouter.post("/", async (c) => {
     const body = await c.req.json();
+    const authorId = c.get("userId");
 
     const prisma = new PrismaClient({
         datasourceUrl: c.env.DATABASE_URL,
@@ -38,7 +44,7 @@ blogRouter.post("/", async (c) => {
             data: {
                 title: body.title,
                 content: body.content,
-                authorId: 1,
+                authorId: Number(authorId),
             },
         });
 
@@ -78,29 +84,6 @@ blogRouter.put("/", async (c) => {
     }
 });
 
-blogRouter.get("/", async (c) => {
-    const body = await c.req.json();
-
-    const prisma = new PrismaClient({
-        datasourceUrl: c.env.DATABASE_URL,
-    }).$extends(withAccelerate());
-
-    try {
-        const blog = await prisma.blog.findFirst({
-            where: {
-                id: body.id,
-            },
-        });
-
-        return c.json({
-            blog,
-        });
-    } catch (error) {
-        c.status(411);
-        return c.text("Failed to find the requested blog");
-    }
-});
-
 // Need to do pagination
 blogRouter.get("/bulk", async (c) => {
     const prisma = new PrismaClient({
@@ -116,5 +99,28 @@ blogRouter.get("/bulk", async (c) => {
     } catch (error) {
         c.status(411);
         return c.text("Failed to fetch blogs");
+    }
+});
+
+blogRouter.get("/:id", async (c) => {
+    const id = c.req.param("id");
+
+    const prisma = new PrismaClient({
+        datasourceUrl: c.env.DATABASE_URL,
+    }).$extends(withAccelerate());
+
+    try {
+        const blog = await prisma.blog.findFirst({
+            where: {
+                id: Number(id),
+            },
+        });
+
+        return c.json({
+            blog,
+        });
+    } catch (error) {
+        c.status(411);
+        return c.text("Failed to find the requested blog");
     }
 });
