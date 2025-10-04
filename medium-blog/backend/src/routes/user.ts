@@ -2,6 +2,7 @@ import { Hono } from "hono";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { PrismaClient } from "@prisma/client/edge";
 import { sign } from "hono/jwt";
+import { signupInput, signinInput } from "@rkrana001/medium-blog-types";
 
 export const userRouter = new Hono<{
     Bindings: {
@@ -12,6 +13,11 @@ export const userRouter = new Hono<{
 
 userRouter.post("/signup", async (c) => {
     const body = await c.req.json();
+    const { success } = signupInput.safeParse(body);
+    if (!success) {
+        c.status(411);
+        return c.text("Inputs aren't in correct format");
+    }
 
     const prisma = new PrismaClient({
         datasourceUrl: c.env.DATABASE_URL,
@@ -37,6 +43,11 @@ userRouter.post("/signup", async (c) => {
 
 userRouter.post("/signin", async (c) => {
     const body = await c.req.json();
+    const { success } = signinInput.safeParse(body);
+    if (!success) {
+        c.status(411);
+        return c.text("Inputs aren't in correct format");
+    }
 
     const prisma = new PrismaClient({
         datasourceUrl: c.env.DATABASE_URL,

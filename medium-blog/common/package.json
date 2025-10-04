@@ -1,0 +1,16 @@
+{
+    "name": "@rkrana001/medium-blog-types",
+    "version": "1.0.5",
+    "description": "",
+    "main": "dist/index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "type": "commonjs",
+    "dependencies": {
+        "zod": "^4.1.11"
+    }
+}
