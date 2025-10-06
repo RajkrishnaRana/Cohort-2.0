@@ -44,13 +44,14 @@ const Auth: React.FC<AuthProps> = ({ type }) => {
 
     const handleSignIn = async () => {
         const payload: SigninInput = { username, password };
+        console.log(payload);
 
         try {
             setLoading(true);
             const response = await axios.post(`${BASE_URL}/api/v1/users/signin`, payload);
             const jwt = response.data;
             localStorage.setItem("jwt", jwt);
-            navigate("/blog");
+            navigate("/blogs");
         } catch (e: any) {
             console.error(e);
             toast.error(e.response.data || "Something went wrong");
@@ -61,8 +62,11 @@ const Auth: React.FC<AuthProps> = ({ type }) => {
 
     return (
         <div className="flex flex-col justify-center items-center">
+            {/* Header section */}
             <div className="mb-10">
-                <h1 className="text-3xl/loose font-bold text-black text-center">{type === "signup" ? "Create an account" : "Welcome Back"}</h1>
+                <h1 className="text-3xl/loose font-bold text-black text-center">
+                    {type === "signup" ? "Create an account" : "Welcome Back"}
+                </h1>
                 <section className="flex items-center justify-center">
                     <h3 className="text-sm/normal text-gray-500 text-center">
                         {type === "signup" ? "Already have an account?" : "Don't have an account?"}
@@ -73,6 +77,7 @@ const Auth: React.FC<AuthProps> = ({ type }) => {
                 </section>
             </div>
 
+            {/* Form Section */}
             <div className="w-full max-w-md py-5">
                 <FieldSet>
                     <FieldGroup className="gap-5">
@@ -80,21 +85,36 @@ const Auth: React.FC<AuthProps> = ({ type }) => {
                             <FieldLabel htmlFor="username" className="text-black font-bold">
                                 Username
                             </FieldLabel>
-                            <Input id="username" type="text" placeholder="Enter your username" onChange={(e) => setUsername(e.target.value)} />
+                            <Input
+                                id="username"
+                                type="text"
+                                placeholder="Enter your username"
+                                onChange={(e) => setUsername(e.target.value)}
+                            />
                         </Field>
                         {type === "signup" && (
                             <Field>
                                 <FieldLabel htmlFor="password" className="text-black font-bold">
                                     Name
                                 </FieldLabel>
-                                <Input id="name" type="text" placeholder="Enter your Name" onChange={(e) => setName(e.target.value)} />
+                                <Input
+                                    id="name"
+                                    type="text"
+                                    placeholder="Enter your Name"
+                                    onChange={(e) => setName(e.target.value)}
+                                />
                             </Field>
                         )}
                         <Field>
                             <FieldLabel htmlFor="password" className="text-black font-bold">
                                 Password
                             </FieldLabel>
-                            <Input id="password" type="password" placeholder="Enter your password" onChange={(e) => setPassword(e.target.value)} />
+                            <Input
+                                id="password"
+                                type="password"
+                                placeholder="Enter your password"
+                                onChange={(e) => setPassword(e.target.value)}
+                            />
                         </Field>
                         <Button variant="default" className="mt-5" onClick={type === "signup" ? handleSignUp : handleSignIn}>
                             {loading ? <Spinner /> : type === "signup" ? "Sign Up" : "Sign In"}
