@@ -1,1 +1,0 @@
-{"root":["../create_table.ts","../delete_data.ts","../dockerPostGres.ts","../get_data.ts","../insert_data.ts","../joins_data.ts","../update_data.ts","../utils.ts"],"version":"5.8.2"}
